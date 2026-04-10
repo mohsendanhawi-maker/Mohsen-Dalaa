@@ -261,8 +261,23 @@
         <div class="card-icon">📝</div>
         <div><div class="card-title">أضف ذكرى جديدة</div></div>
       </div>
+
+      <!-- Emoji picker -->
+      <div style="margin-bottom:10px">
+        <div style="font-size:11px;color:var(--text-soft);margin-bottom:6px">اختر إيموجي:</div>
+        <div id="emojiPicker" style="display:flex;flex-wrap:wrap;gap:6px">
+        </div>
+      </div>
+
       <input class="add-input" id="mem-title" placeholder="اسم الذكرى... (مثال: أول فنجان قهوة)" style="margin-bottom:10px;width:100%;display:block"/>
       <textarea class="add-input" id="mem-desc" placeholder="وصف الذكرى... (اختياري)" style="width:100%;display:block;resize:none;height:80px;margin-bottom:10px;font-family:'Tajawal',sans-serif"></textarea>
+
+      <!-- Date picker -->
+      <div style="margin-bottom:10px">
+        <div style="font-size:11px;color:var(--text-soft);margin-bottom:6px">التاريخ:</div>
+        <input type="date" id="mem-date" class="add-input" style="width:100%;display:block" />
+      </div>
+
       <div style="display:flex;gap:8px">
         <button class="add-btn" style="flex:1;width:auto;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700" onclick="addMemoryText()">+ أضف الذكرى</button>
         <button class="add-btn" style="width:44px;background:var(--gold);border-radius:12px" onclick="document.getElementById('memFileInput').click()" title="أضف صورة">📸</button>
@@ -348,6 +363,7 @@ function startApp() {
   listenThinks();
   ['places','things','food'].forEach(listenList);
   listenMemories();
+  setTimeout(() => { setupEmojiPicker(); setDefaultDate(); }, 100);
 }
 
 window.refreshMessage = () => {
@@ -409,21 +425,71 @@ function listenList(type) {
   });
 }
 
+// Emoji picker setup
+const EMOJIS = ['🌸','💫','✨','🌙','☀️','🎵','🍃','💕','🌺','⭐','🎉','🏖️','🌍','🍕','🎬','📚','🌹','🎂','💐','🤍'];
+let selectedEmoji = '✨';
+
+function setupEmojiPicker() {
+  const picker = document.getElementById('emojiPicker');
+  if (!picker) return;
+  picker.innerHTML = EMOJIS.map(e => 
+    `<button onclick="selectEmoji(this,'" + e + "')" style="font-size:22px;background:${e===selectedEmoji?'var(--rose-pale)':'transparent'};border:2px solid ${e===selectedEmoji?'var(--rose-light)':'transparent'};border-radius:10px;padding:4px;cursor:pointer;transition:all 0.2s">${e}</button>`
+  ).join('');
+}
+
+window.selectEmoji = (btn, emoji) => {
+  selectedEmoji = emoji;
+  document.querySelectorAll('#emojiPicker button').forEach(b => {
+    b.style.background = 'transparent';
+    b.style.borderColor = 'transparent';
+  });
+  btn.style.background = 'var(--rose-pale)';
+  btn.style.borderColor = 'var(--rose-light)';
+};
+
+// Set today as default date
+function setDefaultDate() {
+  const dateInput = document.getElementById('mem-date');
+  if (dateInput) {
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.value = today;
+  }
+}
+
 window.addMemoryText = async () => {
   const title = document.getElementById('mem-title').value.trim();
   if (!title) { showToast('❌ اكتب اسم الذكرى أول!'); return; }
   const desc = document.getElementById('mem-desc').value.trim();
-  const emojis = ['🌸','💫','✨','🌙','☀️','🎵','🍃','💕','🌺','⭐'];
-  const emoji = emojis[Math.floor(Math.random()*emojis.length)];
+  const dateVal = document.getElementById('mem-date').value;
+  const dateObj = dateVal ? new Date(dateVal) : new Date();
+  const dateStr = dateObj.toLocaleDateString('ar-SA');
   await addDoc(collection(db,'memories'), {
-    type:'text', title, desc, emoji,
+    type:'text', title, desc, emoji: selectedEmoji,
     who:currentUser,
-    date:new Date().toLocaleDateString('ar-SA'),
+    date:dateStr,
+    sortDate: dateVal || new Date().toISOString().split('T')[0],
     createdAt:new Date().toISOString()
   });
   document.getElementById('mem-title').value = '';
   document.getElementById('mem-desc').value = '';
+  setDefaultDate();
+  selectedEmoji = '✨';
+  setupEmojiPicker();
   showToast('💕 تمت إضافة الذكرى!');
+};
+
+window.deleteMemory = async (id) => {
+  if (!confirm('بدك تحذف هالذكرى؟')) return;
+  await deleteDoc(doc(db,'memories',id));
+  showToast('🗑️ تم الحذف');
+};
+
+window.editMemory = async (id, oldTitle, oldDesc) => {
+  const newTitle = prompt('عدّل اسم الذكرى:', oldTitle);
+  if (!newTitle) return;
+  const newDesc = prompt('عدّل الوصف:', oldDesc || '');
+  await updateDoc(doc(db,'memories',id), { title: newTitle, desc: newDesc || '' });
+  showToast('✅ تم التعديل!');
 };
 
 window.handleMemoryFile = (input) => {
@@ -476,6 +542,10 @@ function listenMemories() {
               <div style="font-weight:700;font-size:14px;color:var(--text-dark)">${m.title}</div>
               ${m.desc ? `<div style="font-size:13px;color:var(--text-mid);margin-top:4px;line-height:1.6">${m.desc}</div>` : ''}
               <div style="font-size:11px;color:var(--text-soft);margin-top:6px">${m.date} · ${m.who}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+              <button onclick="editMemory('${d.id}','${m.title}','${m.desc||''}')" style="background:var(--rose-pale);border:none;border-radius:8px;padding:6px 8px;font-size:14px;cursor:pointer">✏️</button>
+              <button onclick="deleteMemory('${d.id}')" style="background:#fff0f0;border:none;border-radius:8px;padding:6px 8px;font-size:14px;cursor:pointer">🗑️</button>
             </div>
           </div></div>`;
       } else {
