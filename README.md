@@ -1,0 +1,524 @@
+[index.html.html](https://github.com/user-attachments/files/26626806/index.html.html)
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>محسن ودلع 💍</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #c9847a; --rose-light: #e8b4ae; --rose-pale: #f5ddd9;
+    --cream: #fdf6f0; --warm: #f0e6d8; --gold: #c4a882; --gold-light: #e8d5b5;
+    --text-dark: #3d2b22; --text-mid: #7a5c4e; --text-soft: #b08878;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:'Tajawal',sans-serif; background:var(--cream); color:var(--text-dark); min-height:100vh; overflow-x:hidden; }
+  body::before { content:''; position:fixed; inset:0; background:radial-gradient(ellipse at 20% 20%,rgba(201,132,122,0.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(196,168,130,0.08) 0%,transparent 60%); pointer-events:none; z-index:0; }
+
+  /* LOGIN */
+  .login-screen { position:fixed; inset:0; z-index:1000; background:var(--cream); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 30px; gap:16px; }
+  .login-heart { font-size:52px; margin-bottom:8px; }
+  .login-title { font-family:'Playfair Display',serif; font-size:34px; font-style:italic; color:var(--text-dark); text-align:center; }
+  .login-subtitle { font-size:13px; color:var(--text-soft); margin-top:-6px; }
+  .name-btn { width:100%; max-width:280px; padding:18px; border:none; border-radius:20px; font-family:'Tajawal',sans-serif; font-size:16px; font-weight:700; cursor:pointer; transition:all 0.25s; box-shadow:0 4px 20px rgba(201,132,122,0.25); }
+  .name-btn.mohsen { background:linear-gradient(135deg,var(--rose),#b87070); color:white; }
+  .name-btn.dala { background:linear-gradient(135deg,var(--gold-light),var(--warm)); color:var(--text-dark); border:1px solid var(--gold-light); }
+  .name-btn:active { transform:scale(0.96); }
+  .login-or { color:var(--text-soft); font-size:13px; }
+
+  /* APP */
+  .app { max-width:430px; margin:0 auto; min-height:100vh; position:relative; z-index:1; display:none; }
+  .user-badge { position:fixed; top:16px; left:16px; z-index:200; background:white; border:1px solid var(--rose-pale); border-radius:100px; padding:6px 14px; font-size:12px; color:var(--text-mid); font-weight:600; box-shadow:0 2px 10px rgba(61,43,34,0.08); cursor:pointer; }
+
+  /* HEADER */
+  .header { text-align:center; padding:40px 20px 20px; }
+  .header-ornament { font-size:11px; letter-spacing:6px; color:var(--gold); margin-bottom:8px; font-weight:300; }
+  .header h1 { font-family:'Playfair Display',serif; font-size:32px; font-style:italic; color:var(--text-dark); margin-bottom:4px; }
+  .heart-divider { display:flex; align-items:center; justify-content:center; gap:10px; margin:10px 0; color:var(--rose); }
+  .heart-divider::before,.heart-divider::after { content:''; width:50px; height:1px; background:linear-gradient(90deg,transparent,var(--rose-light)); }
+  .heart-divider::after { background:linear-gradient(90deg,var(--rose-light),transparent); }
+
+  /* COUNTER */
+  .counter-card { margin:0 16px 16px; background:linear-gradient(135deg,var(--rose),#b87070); border-radius:24px; padding:28px 24px; color:white; text-align:center; position:relative; overflow:hidden; box-shadow:0 8px 32px rgba(201,132,122,0.35); }
+  .counter-card::before { content:'♡'; position:absolute; font-size:140px; opacity:0.07; top:-20px; right:-10px; line-height:1; }
+  .counter-label { font-size:12px; letter-spacing:3px; opacity:0.85; margin-bottom:12px; font-weight:300; }
+  .counter-number { font-family:'Playfair Display',serif; font-size:72px; line-height:1; margin-bottom:4px; animation:heartBeat 2s ease infinite; }
+  .counter-unit { font-size:14px; opacity:0.9; margin-bottom:16px; }
+  .counter-date { font-size:12px; opacity:0.7; background:rgba(255,255,255,0.15); padding:6px 16px; border-radius:20px; display:inline-block; }
+
+  /* NOTIF BANNER */
+  .notif-banner { display:none; margin:0 16px 16px; background:linear-gradient(135deg,#f5ddd9,#fdf6f0); border:1px solid var(--rose-light); border-radius:16px; padding:16px 20px; text-align:center; animation:fadeIn 0.4s ease; }
+  .notif-banner.show { display:block; }
+  .notif-emoji { font-size:28px; margin-bottom:6px; }
+  .notif-text-el { font-size:14px; font-weight:700; color:var(--rose); }
+  .notif-time-el { font-size:11px; color:var(--text-soft); margin-top:4px; }
+
+  /* THINK BTN */
+  .think-section { margin:0 16px 16px; }
+  .think-btn { width:100%; background:linear-gradient(135deg,var(--rose),#b87070); border:none; border-radius:20px; padding:20px; display:flex; align-items:center; justify-content:center; gap:12px; cursor:pointer; transition:all 0.25s; box-shadow:0 4px 20px rgba(201,132,122,0.3); }
+  .think-btn:active { transform:scale(0.97); }
+  .think-emoji { font-size:28px; }
+  .think-text { font-family:'Tajawal',sans-serif; font-size:16px; font-weight:700; color:white; }
+  .think-sub { font-size:12px; opacity:0.85; color:white; }
+
+  /* CARD */
+  .card { margin:0 16px 16px; background:white; border-radius:20px; padding:24px; box-shadow:0 2px 16px rgba(61,43,34,0.07); border:1px solid var(--rose-pale); }
+  .card-header { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+  .card-icon { width:38px; height:38px; border-radius:12px; background:var(--rose-pale); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+  .card-title { font-size:14px; font-weight:700; }
+  .card-subtitle { font-size:11px; color:var(--text-soft); margin-top:2px; }
+  .daily-message { font-size:15px; line-height:1.8; color:var(--text-mid); background:var(--cream); padding:16px; border-radius:14px; border-right:3px solid var(--rose-light); font-style:italic; min-height:60px; }
+  .btn-refresh { width:100%; margin-top:14px; padding:12px; background:var(--rose-pale); border:none; border-radius:12px; color:var(--rose); font-family:'Tajawal',sans-serif; font-size:13px; font-weight:600; cursor:pointer; }
+  .btn-refresh:active { opacity:0.8; }
+
+  /* IDEA */
+  .idea-card { margin:0 16px 16px; background:linear-gradient(135deg,var(--warm),var(--gold-light)); border-radius:20px; padding:24px; border:1px solid var(--gold-light); }
+  .idea-category { text-align:center; font-size:11px; letter-spacing:2px; color:var(--gold); font-weight:600; margin-bottom:8px; }
+  .idea-text { font-size:16px; line-height:1.8; color:var(--text-dark); text-align:center; margin:12px 0; font-weight:500; min-height:50px; }
+
+  /* TABS */
+  .tabs { display:flex; margin:0 16px 16px; background:var(--warm); border-radius:14px; padding:4px; }
+  .tab { flex:1; padding:10px 8px; border:none; background:transparent; border-radius:10px; font-family:'Tajawal',sans-serif; font-size:12px; font-weight:600; color:var(--text-soft); cursor:pointer; transition:all 0.2s; }
+  .tab.active { background:white; color:var(--text-dark); box-shadow:0 2px 8px rgba(61,43,34,0.08); }
+  .tab-content { display:none !important; }
+  .tab-content.active { display:block !important; }
+
+  /* LISTS */
+  .list-section { margin:0 16px 16px; background:white; border-radius:20px; padding:20px; box-shadow:0 2px 16px rgba(61,43,34,0.07); border:1px solid var(--rose-pale); }
+  .add-input-row { display:flex; gap:8px; margin-bottom:16px; }
+  .add-input { flex:1; padding:12px 14px; border:1.5px solid var(--rose-pale); border-radius:12px; font-family:'Tajawal',sans-serif; font-size:13px; color:var(--text-dark); background:var(--cream); outline:none; }
+  .add-input:focus { border-color:var(--rose-light); }
+  .add-input::placeholder { color:var(--text-soft); }
+  .add-btn { width:44px; height:44px; background:var(--rose); border:none; border-radius:12px; color:white; font-size:22px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .list-items { display:flex; flex-direction:column; gap:8px; }
+  .list-item { display:flex; align-items:center; gap:10px; padding:12px 14px; background:var(--cream); border-radius:12px; animation:slideIn 0.3s ease; }
+  .item-check { width:22px; height:22px; border-radius:50%; border:2px solid var(--rose-light); cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:12px; color:transparent; }
+  .list-item.done .item-check { background:var(--rose); border-color:var(--rose); color:white; }
+  .item-text { flex:1; font-size:13px; color:var(--text-mid); }
+  .list-item.done .item-text { text-decoration:line-through; color:var(--text-soft); }
+  .item-who { font-size:10px; color:var(--text-soft); background:var(--rose-pale); padding:2px 8px; border-radius:10px; flex-shrink:0; }
+  .item-del { font-size:18px; color:var(--rose-light); cursor:pointer; border:none; background:none; padding:4px; }
+
+  /* MEMORIES */
+  .memory-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:0 16px 16px; }
+  .memory-card { background:white; border-radius:16px; overflow:hidden; box-shadow:0 2px 12px rgba(61,43,34,0.08); border:1px solid var(--rose-pale); }
+  .mem-img { width:100%; aspect-ratio:1; object-fit:cover; display:block; }
+  .mem-placeholder { width:100%; aspect-ratio:1; background:var(--rose-pale); display:flex; align-items:center; justify-content:center; font-size:32px; }
+  .mem-caption { padding:10px 12px; font-size:12px; color:var(--text-mid); }
+  .mem-date { font-size:10px; color:var(--text-soft); margin-top:3px; }
+  .add-memory-btn { margin:0 16px 16px; width:calc(100% - 32px); padding:16px; background:white; border:2px dashed var(--rose-light); border-radius:16px; color:var(--rose); font-family:'Tajawal',sans-serif; font-size:13px; font-weight:600; cursor:pointer; text-align:center; }
+
+  /* BOTTOM NAV */
+  .bottom-nav { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; background:rgba(253,246,240,0.95); backdrop-filter:blur(20px); border-top:1px solid var(--rose-pale); display:flex; padding:10px 0 calc(10px + env(safe-area-inset-bottom)); z-index:100; }
+  .nav-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; padding:4px; border:none; background:none; }
+  .nav-icon { font-size:22px; }
+  .nav-label { font-family:'Tajawal',sans-serif; font-size:10px; color:var(--text-soft); font-weight:600; }
+  .nav-item.active .nav-label { color:var(--rose); }
+
+  /* PAGES */
+  .page { display:none; padding-bottom:90px; }
+  .page.active { display:block; }
+
+  /* LOADING */
+  .loading-overlay { position:fixed; inset:0; z-index:500; background:var(--cream); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; }
+  .loading-heart { font-size:48px; animation:heartBeat 1s ease infinite; }
+  .loading-text { font-size:14px; color:var(--text-soft); }
+
+  /* TOAST */
+  .toast { position:fixed; top:20px; left:50%; transform:translateX(-50%) translateY(-80px); background:var(--text-dark); color:white; padding:12px 24px; border-radius:100px; font-size:13px; font-weight:600; transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1); z-index:999; white-space:nowrap; }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+
+  .empty-state { text-align:center; padding:30px; color:var(--text-soft); font-size:13px; }
+  .empty-emoji { font-size:36px; margin-bottom:10px; }
+
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes slideIn { from{opacity:0;transform:translateX(10px)} to{opacity:1;transform:translateX(0)} }
+  @keyframes heartBeat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay" style="display:none">
+  <div class="loading-heart">💍</div>
+  <div class="loading-text">جارٍ التحميل...</div>
+</div>
+
+<div class="login-screen" id="loginScreen" style="display:flex">
+  <div class="login-heart">💍</div>
+  <div class="login-title">محسن ودلع</div>
+  <div class="login-subtitle">من أنت؟</div>
+  <button class="name-btn mohsen" onclick="login('محسن')">أنا محسن 💙</button>
+  <div class="login-or">أو</div>
+  <button class="name-btn dala" onclick="login('دلع')">أنا دلع 🌸</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="app" id="app">
+  <div class="user-badge" id="userBadge" onclick="logout()"></div>
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="header">
+      <div class="header-ornament">✦ معاً ✦</div>
+      <h1>محسن ودلع</h1>
+      <div class="heart-divider">💍</div>
+    </div>
+
+    <div class="notif-banner" id="notifBanner">
+      <div class="notif-emoji">💭</div>
+      <div class="notif-text-el" id="notifText"></div>
+      <div class="notif-time-el" id="notifTime"></div>
+    </div>
+
+    <div class="counter-card">
+      <div class="counter-label">يوم على خطوبتنا</div>
+      <div class="counter-number" id="dayCount">0</div>
+      <div class="counter-unit">يوم من السعادة</div>
+      <div class="counter-date">2 أبريل 2026</div>
+    </div>
+
+    <div class="think-section">
+      <button class="think-btn" onclick="sendThink()">
+        <span class="think-emoji">💭</span>
+        <div>
+          <div class="think-text">فكرت فيك!</div>
+          <div class="think-sub">اضغط لتخبر الطرف الثاني</div>
+        </div>
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">💌</div>
+        <div><div class="card-title">رسالة اليوم</div><div class="card-subtitle">كلمة تدفئ القلب</div></div>
+      </div>
+      <div class="daily-message" id="dailyMsg"></div>
+      <button class="btn-refresh" onclick="refreshMessage()">✨ رسالة جديدة</button>
+    </div>
+
+    <div class="idea-card">
+      <div class="card-header">
+        <div class="card-icon" style="background:var(--gold-light)">🎲</div>
+        <div><div class="card-title">فكرة اليوم</div><div class="card-subtitle">نشاط أو سؤال يقربنا</div></div>
+      </div>
+      <div class="idea-category" id="ideaCategory"></div>
+      <div class="idea-text" id="ideaText"></div>
+      <button class="btn-refresh" onclick="refreshIdea()">🎲 فكرة جديدة</button>
+    </div>
+  </div>
+
+  <!-- DREAMS -->
+  <div class="page" id="page-dreams">
+    <div class="header">
+      <div class="header-ornament">✦ أحلامنا ✦</div>
+      <h1 style="font-size:26px">أحلامنا معاً</h1>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab(this,'places')">🗺️ أماكن</button>
+      <button class="tab" onclick="switchTab(this,'things')">✨ أشياء</button>
+      <button class="tab" onclick="switchTab(this,'food')">🍽️ أكل</button>
+    </div>
+    <div class="tab-content active" id="tab-places">
+      <div class="list-section">
+        <div class="add-input-row">
+          <input class="add-input" id="input-places" placeholder="مكان بدنا نزوره..." />
+          <button class="add-btn" onclick="addItem('places')">+</button>
+        </div>
+        <div class="list-items" id="list-places"></div>
+      </div>
+    </div>
+    <div class="tab-content" id="tab-things">
+      <div class="list-section">
+        <div class="add-input-row">
+          <input class="add-input" id="input-things" placeholder="شي بدنا نعمله..." />
+          <button class="add-btn" onclick="addItem('things')">+</button>
+        </div>
+        <div class="list-items" id="list-things"></div>
+      </div>
+    </div>
+    <div class="tab-content" id="tab-food">
+      <div class="list-section">
+        <div class="add-input-row">
+          <input class="add-input" id="input-food" placeholder="مطعم أو أكلة نجربها..." />
+          <button class="add-btn" onclick="addItem('food')">+</button>
+        </div>
+        <div class="list-items" id="list-food"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEMORIES -->
+  <div class="page" id="page-memories">
+    <div class="header">
+      <div class="header-ornament">✦ ذكرياتنا ✦</div>
+      <h1 style="font-size:26px">ذكرياتنا</h1>
+    </div>
+
+    <!-- Add memory form -->
+    <div class="list-section" style="margin:0 16px 16px">
+      <div class="card-header" style="margin-bottom:12px">
+        <div class="card-icon">📝</div>
+        <div><div class="card-title">أضف ذكرى جديدة</div></div>
+      </div>
+      <input class="add-input" id="mem-title" placeholder="اسم الذكرى... (مثال: أول فنجان قهوة)" style="margin-bottom:10px;width:100%;display:block"/>
+      <textarea class="add-input" id="mem-desc" placeholder="وصف الذكرى... (اختياري)" style="width:100%;display:block;resize:none;height:80px;margin-bottom:10px;font-family:'Tajawal',sans-serif"></textarea>
+      <div style="display:flex;gap:8px">
+        <button class="add-btn" style="flex:1;width:auto;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700" onclick="addMemoryText()">+ أضف الذكرى</button>
+        <button class="add-btn" style="width:44px;background:var(--gold);border-radius:12px" onclick="document.getElementById('memFileInput').click()" title="أضف صورة">📸</button>
+      </div>
+      <input type="file" id="memFileInput" accept="image/*" style="display:none" onchange="handleMemoryFile(this)">
+    </div>
+
+    <div class="memory-list" id="memoryList" style="margin:0 16px 16px;display:flex;flex-direction:column;gap:10px">
+      <div class="memory-card" style="border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(61,43,34,0.08);border:1px solid var(--rose-pale)">
+        <div style="display:flex;align-items:center;gap:14px;padding:16px">
+          <div style="font-size:32px">💍</div>
+          <div>
+            <div style="font-weight:700;font-size:14px;color:var(--text-dark)">يوم الخطوبة</div>
+            <div style="font-size:12px;color:var(--text-soft);margin-top:3px">2 أبريل 2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="goTo('home',this)"><span class="nav-icon">🏠</span><span class="nav-label">الرئيسية</span></button>
+    <button class="nav-item" onclick="goTo('dreams',this)"><span class="nav-icon">⭐</span><span class="nav-label">أحلامنا</span></button>
+    <button class="nav-item" onclick="goTo('memories',this)"><span class="nav-icon">📸</span><span class="nav-label">ذكريات</span></button>
+  </nav>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, deleteDoc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+const db = getFirestore(initializeApp({
+  apiKey: "AIzaSyDzJ2i9DdFSgC8lr55c-qriXbmOJceitK8",
+  authDomain: "mohsen-dalaa.firebaseapp.com",
+  projectId: "mohsen-dalaa",
+  storageBucket: "mohsen-dalaa.firebasestorage.app",
+  messagingSenderId: "926466105296",
+  appId: "1:926466105296:web:6399ba5db88ce29055a3d5"
+}));
+
+const MSGS = [
+  "أنتِ الحلم اللي ما كنت أتوقع إنه يصير حقيقة، بس صار وأنا أسعد إنسان",
+  "كل يوم بفكر فيكِ وبحمد ربي على نعمتك",
+  "وجودكِ في حياتي بيخلي كل شي أجمل وأحلى",
+  "أنتِ الهدوء اللي بلاقيه بنهاية كل يوم",
+  "بتمنى أفضل دايماً السبب اللي بخليكِ تبتسمي",
+  "من أجمل القرارات اللي اتخذتها إنك تكوني في حياتي",
+  "كل لحظة معكِ بتصير ذكرى بتظل في القلب",
+  "أنتِ مش بس خطيبتي، أنتِ صاحبتي ورفيقة دربي",
+  "الدنيا بتبان أحلى لما بكون عارف إنك موجودة",
+  "بحبكِ بكل اللي أنتِ عليه، بعيوبك ومزاياكِ"
+];
+
+const IDEAS = [
+  {cat:"سؤال", text:"شو أكتر شي بيضحككِ بالدنيا؟ 😄"},
+  {cat:"نشاط", text:"حكولي عن حلمكِ اللي دايماً بدكِ تحققيه 🌟"},
+  {cat:"سؤال", text:"لو قدرنا نسافر أي مكان بالعالم، وين بتختاري؟ ✈️"},
+  {cat:"نشاط", text:"جهزي قائمة بـ 5 أفلام بدكِ نحضرها مع بعض 🎬"},
+  {cat:"سؤال", text:"شو اللي بيخليكِ تحسي بالأمان أكتر شي؟ 🤗"},
+  {cat:"سؤال", text:"شو أجمل شي بتحبيه بالطبيعة؟ بحر؟ جبال؟ 🏔️"},
+  {cat:"نشاط", text:"حكيلي عن كتاب أو مسلسل غيّر تفكيرك 📚"},
+  {cat:"سؤال", text:"لو بدنا نعمل روتين أسبوعي مع بعض، شو بتقترحي؟ 🌿"},
+  {cat:"سؤال", text:"شو أحلى ذكرى عندكِ من طفولتك؟ 👶"},
+  {cat:"نشاط", text:"ارسملي مكان خيالي بدكِ نزوره مع بعض 🗺️"}
+];
+
+let currentUser = localStorage.getItem('coupleUser');
+
+window.login = (name) => { localStorage.setItem('coupleUser', name); currentUser = name; startApp(); };
+window.logout = () => { localStorage.removeItem('coupleUser'); location.reload(); };
+
+function startApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('userBadge').textContent = currentUser === 'محسن' ? '💙 محسن (اضغط للخروج)' : '🌸 دلع (اضغط للخروج)';
+
+  // Counter
+  const diff = Math.floor((new Date() - new Date('2026-04-02')) / 86400000);
+  document.getElementById('dayCount').textContent = diff;
+
+  refreshMessage();
+  refreshIdea();
+  listenThinks();
+  ['places','things','food'].forEach(listenList);
+  listenMemories();
+}
+
+window.refreshMessage = () => {
+  const el = document.getElementById('dailyMsg');
+  el.style.opacity = 0;
+  setTimeout(() => { el.textContent = MSGS[Math.floor(Math.random()*MSGS.length)]; el.style.transition='opacity 0.4s'; el.style.opacity=1; }, 200);
+};
+
+window.refreshIdea = () => {
+  const idea = IDEAS[Math.floor(Math.random()*IDEAS.length)];
+  const t = document.getElementById('ideaText');
+  t.style.opacity = 0;
+  setTimeout(() => { document.getElementById('ideaCategory').textContent=idea.cat; t.textContent=idea.text; t.style.transition='opacity 0.4s'; t.style.opacity=1; }, 200);
+};
+
+window.sendThink = async () => {
+  const other = currentUser === 'محسن' ? 'دلع' : 'محسن';
+  await setDoc(doc(db,'thinks','latest'), { from:currentUser, to:other, time:new Date().toISOString() });
+  showToast(`💭 أرسلت "فكرت فيك" إلى ${other}!`);
+};
+
+function listenThinks() {
+  onSnapshot(doc(db,'thinks','latest'), snap => {
+    if (!snap.exists()) return;
+    const d = snap.data();
+    if (d.to !== currentUser) return;
+    const t = new Date(d.time);
+    document.getElementById('notifText').textContent = `${d.from} فكّر فيك 💕`;
+    document.getElementById('notifTime').textContent = `اليوم الساعة ${t.toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'})}`;
+    document.getElementById('notifBanner').classList.add('show');
+  });
+}
+
+window.addItem = async (type) => {
+  const input = document.getElementById('input-'+type);
+  const text = input.value.trim();
+  if (!text) return;
+  await addDoc(collection(db,'list_'+type), { text, done:false, who:currentUser, createdAt:new Date().toISOString() });
+  input.value = '';
+  showToast('✅ تمت الإضافة!');
+};
+
+window.toggleItem = async (type, id, done) => { await updateDoc(doc(db,'list_'+type,id), {done:!done}); };
+window.deleteItem = async (type, id) => { await deleteDoc(doc(db,'list_'+type,id)); };
+
+function listenList(type) {
+  onSnapshot(query(collection(db,'list_'+type), orderBy('createdAt','desc')), snap => {
+    const el = document.getElementById('list-'+type);
+    if (snap.empty) { el.innerHTML=`<div class="empty-state"><div class="empty-emoji">✨</div>أضف أول شي!</div>`; return; }
+    el.innerHTML = snap.docs.map(d => {
+      const i = d.data();
+      return `<div class="list-item ${i.done?'done':''}">
+        <div class="item-check" onclick="toggleItem('${type}','${d.id}',${i.done})">✓</div>
+        <div class="item-text">${i.text}</div>
+        <div class="item-who">${i.who}</div>
+        <button class="item-del" onclick="deleteItem('${type}','${d.id}')">×</button>
+      </div>`;
+    }).join('');
+  });
+}
+
+window.addMemoryText = async () => {
+  const title = document.getElementById('mem-title').value.trim();
+  if (!title) { showToast('❌ اكتب اسم الذكرى أول!'); return; }
+  const desc = document.getElementById('mem-desc').value.trim();
+  const emojis = ['🌸','💫','✨','🌙','☀️','🎵','🍃','💕','🌺','⭐'];
+  const emoji = emojis[Math.floor(Math.random()*emojis.length)];
+  await addDoc(collection(db,'memories'), {
+    type:'text', title, desc, emoji,
+    who:currentUser,
+    date:new Date().toLocaleDateString('ar-SA'),
+    createdAt:new Date().toISOString()
+  });
+  document.getElementById('mem-title').value = '';
+  document.getElementById('mem-desc').value = '';
+  showToast('💕 تمت إضافة الذكرى!');
+};
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const caption = prompt('اكتب وصف الذكرى:') || 'ذكرى جميلة';
+    showToast('⏳ جارٍ الرفع...');
+    try {
+      const compressed = await compress(e.target.result);
+      await addDoc(collection(db,'memories'), { src:compressed, caption, date:new Date().toLocaleDateString('ar-SA'), who:currentUser, createdAt:new Date().toISOString() });
+      showToast('📸 تمت إضافة الذكرى!');
+    } catch { showToast('❌ الصورة كبيرة جداً، جرب أصغر'); }
+  };
+  reader.readAsDataURL(file);
+};
+
+function compress(dataUrl) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 500, c = document.createElement('canvas');
+      let w=img.width, h=img.height;
+      if (w>h){ if(w>MAX){h=h*(MAX/w);w=MAX;} } else { if(h>MAX){w=w*(MAX/h);h=MAX;} }
+      c.width=w; c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      resolve(c.toDataURL('image/jpeg',0.7));
+    };
+    img.src = dataUrl;
+  });
+}
+
+function listenMemories() {
+  onSnapshot(query(collection(db,'memories'), orderBy('createdAt','desc')), snap => {
+    const list = document.getElementById('memoryList');
+    const fixed = `<div class="memory-card" style="border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(61,43,34,0.08);border:1px solid var(--rose-pale)">
+      <div style="display:flex;align-items:center;gap:14px;padding:16px">
+        <div style="font-size:32px">💍</div>
+        <div><div style="font-weight:700;font-size:14px;color:var(--text-dark)">يوم الخطوبة</div>
+        <div style="font-size:12px;color:var(--text-soft);margin-top:3px">2 أبريل 2026 · محسن ودلع</div></div>
+      </div></div>`;
+    const cards = snap.docs.map(d => {
+      const m = d.data();
+      if (m.type === 'text') {
+        return `<div style="background:white;border-radius:16px;box-shadow:0 2px 12px rgba(61,43,34,0.08);border:1px solid var(--rose-pale);animation:fadeIn 0.3s ease">
+          <div style="display:flex;align-items:flex-start;gap:14px;padding:16px">
+            <div style="font-size:32px;flex-shrink:0">${m.emoji||'✨'}</div>
+            <div style="flex:1">
+              <div style="font-weight:700;font-size:14px;color:var(--text-dark)">${m.title}</div>
+              ${m.desc ? `<div style="font-size:13px;color:var(--text-mid);margin-top:4px;line-height:1.6">${m.desc}</div>` : ''}
+              <div style="font-size:11px;color:var(--text-soft);margin-top:6px">${m.date} · ${m.who}</div>
+            </div>
+          </div></div>`;
+      } else {
+        return `<div style="background:white;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(61,43,34,0.08);border:1px solid var(--rose-pale);animation:fadeIn 0.3s ease">
+          <img src="${m.src}" style="width:100%;max-height:200px;object-fit:cover;display:block"/>
+          <div style="padding:12px 16px">
+            <div style="font-weight:700;font-size:14px;color:var(--text-dark)">${m.caption||'ذكرى جميلة'}</div>
+            <div style="font-size:11px;color:var(--text-soft);margin-top:4px">${m.date} · ${m.who}</div>
+          </div></div>`;
+      }
+    }).join('');
+    list.innerHTML = cards + fixed;
+  });
+}
+
+window.goTo = (page, btn) => {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  btn.classList.add('active');
+};
+
+window.switchTab = (btn, tab) => {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+};
+
+window.showToast = (msg) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+};
+
+// Enter key
+document.querySelectorAll('.add-input').forEach(inp => {
+  inp.addEventListener('keypress', e => { if(e.key==='Enter') addItem(inp.id.replace('input-','')); });
+});
+
+// Init - hide loading immediately
+document.getElementById('loadingOverlay').style.display = 'none';
+if (currentUser) startApp();
+else { document.getElementById('loginScreen').style.display='flex'; }
+</script>
+</body>
+</html>
