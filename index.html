@@ -434,10 +434,10 @@ window.switchDTab = (btn, filter) => {
 
 function renderDreams() {
   const grid = document.getElementById('dreamGrid');
-  const filtered = curDreamFilter==='all' ? allDreams : allDreams.filter(d=>d.type===curDreamFilter);
+  const filtered = curDreamFilter==='all' ? allDreams : allDreams.filter(({d})=>d.type===curDreamFilter);
   // update stats
   const total = allDreams.length;
-  const done = allDreams.filter(d=>d.done).length;
+  const done = allDreams.filter(({d})=>d.done).length;
   document.getElementById('stat-total').textContent = total;
   document.getElementById('stat-done').textContent = done;
   document.getElementById('stat-pct').textContent = total ? Math.round(done/total*100)+'%' : '0%';
@@ -460,7 +460,7 @@ function renderDreams() {
           ${d.note?`<div style="font-size:12px;color:var(--text-soft);margin-top:4px;line-height:1.5">${d.note}</div>`:''}
         </div>
         <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
-          <button onclick="openDreamModal('${id}','${d.type}','${d.text.replace(/'/g,"\'")}','${(d.note||'').replace(/'/g,"\'")}'')" style="background:var(--warm);border:none;border-radius:8px;padding:6px 8px;font-size:13px;cursor:pointer">✏️</button>
+          <button onclick="openDreamModal('${id}','${d.type}','${d.text.replace(/'/g,"\'")}','${(d.note||'').replace(/'/g,"\'")}')" style="background:var(--warm);border:none;border-radius:8px;padding:6px 8px;font-size:13px;cursor:pointer">✏️</button>
           <button onclick="deleteDream('${id}')" style="background:#fff0f0;border:none;border-radius:8px;padding:6px 8px;font-size:13px;cursor:pointer">🗑️</button>
         </div>
       </div>
