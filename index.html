@@ -125,6 +125,26 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- DREAM MODAL -->
+<div id="dreamModal" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(61,43,34,.45);backdrop-filter:blur(4px);align-items:flex-end;justify-content:center">
+  <div style="background:var(--cream);border-radius:28px 28px 0 0;padding:24px 20px 36px;width:100%;max-width:430px;animation:slideUp .3s ease">
+    <div style="width:40px;height:4px;background:var(--rose-pale);border-radius:10px;margin:0 auto 18px"></div>
+    <div style="font-size:15px;font-weight:700;color:var(--text-dark);text-align:center;margin-bottom:16px" id="dreamModalTitle">⭐ حلم جديد</div>
+    <div style="font-size:11px;color:var(--text-soft);font-weight:600;margin-bottom:8px">النوع</div>
+    <div style="display:flex;gap:8px;margin-bottom:14px">
+      <button onclick="setDreamType(this,'places','🗺️ مكان')" class="dtype-btn dtype-active" style="flex:1;padding:10px;border:2px solid var(--rose-light);background:var(--rose-pale);border-radius:12px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;color:var(--rose);cursor:pointer">🗺️ مكان</button>
+      <button onclick="setDreamType(this,'things','✨ شي')" class="dtype-btn" style="flex:1;padding:10px;border:2px solid transparent;background:var(--warm);border-radius:12px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;color:var(--text-soft);cursor:pointer">✨ شي</button>
+      <button onclick="setDreamType(this,'food','🍽️ أكل')" class="dtype-btn" style="flex:1;padding:10px;border:2px solid transparent;background:var(--warm);border-radius:12px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;color:var(--text-soft);cursor:pointer">🍽️ أكل</button>
+    </div>
+    <input class="add-input" id="dream-text" placeholder="اكتب الحلم..." style="width:100%;display:block;margin-bottom:10px"/>
+    <textarea class="add-input" id="dream-note" placeholder="ملاحظة أو تفاصيل... (اختياري)" style="width:100%;display:block;resize:none;height:60px;margin-bottom:16px;font-family:'Tajawal',sans-serif"></textarea>
+    <div style="display:flex;gap:10px">
+      <button onclick="closeDreamModal()" style="flex:1;padding:14px;border:1.5px solid var(--rose-pale);background:white;border-radius:14px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;color:var(--text-soft);cursor:pointer">إلغاء</button>
+      <button onclick="saveDream()" style="flex:2;padding:14px;background:linear-gradient(135deg,var(--rose),#b87070);border:none;border-radius:14px;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;color:white;cursor:pointer">⭐ أضف</button>
+    </div>
+  </div>
+</div>
+
 <!-- MEMORY MODAL -->
 <div id="memModal" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(61,43,34,.45);backdrop-filter:blur(4px);align-items:flex-end;justify-content:center">
   <div style="background:var(--cream);border-radius:28px 28px 0 0;padding:24px 20px 36px;width:100%;max-width:430px;animation:slideUp .3s ease">
@@ -193,38 +213,34 @@
       <div class="header-ornament">✦ أحلامنا ✦</div>
       <h1 style="font-size:26px">أحلامنا معاً</h1>
     </div>
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab(this,'places')">🗺️ أماكن</button>
-      <button class="tab" onclick="switchTab(this,'things')">✨ أشياء</button>
-      <button class="tab" onclick="switchTab(this,'food')">🍽️ أكل</button>
+    <!-- Tabs -->
+    <div style="display:flex;margin:0 16px 16px;background:var(--warm);border-radius:14px;padding:4px;gap:0">
+      <button class="dtab active" id="dtab-all" onclick="switchDTab(this,'all')" style="flex:1;padding:10px 6px;border:none;background:white;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:11px;font-weight:600;color:var(--text-dark);cursor:pointer;box-shadow:0 2px 8px rgba(61,43,34,.08)">الكل</button>
+      <button class="dtab" id="dtab-places" onclick="switchDTab(this,'places')" style="flex:1;padding:10px 6px;border:none;background:transparent;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:11px;font-weight:600;color:var(--text-soft);cursor:pointer">🗺️ أماكن</button>
+      <button class="dtab" id="dtab-things" onclick="switchDTab(this,'things')" style="flex:1;padding:10px 6px;border:none;background:transparent;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:11px;font-weight:600;color:var(--text-soft);cursor:pointer">✨ أشياء</button>
+      <button class="dtab" id="dtab-food" onclick="switchDTab(this,'food')" style="flex:1;padding:10px 6px;border:none;background:transparent;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:11px;font-weight:600;color:var(--text-soft);cursor:pointer">🍽️ أكل</button>
     </div>
-    <div class="tab-content active" id="tab-places">
-      <div class="list-section">
-        <div class="add-input-row">
-          <input class="add-input" id="input-places" placeholder="مكان بدنا نزوره..."/>
-          <button class="add-btn" onclick="addItem('places')">+</button>
-        </div>
-        <div class="list-items" id="list-places"></div>
+    <!-- Add button -->
+    <div style="margin:0 16px 16px">
+      <button onclick="openDreamModal()" style="width:100%;padding:16px;background:linear-gradient(135deg,var(--rose),#b87070);border:none;border-radius:16px;color:white;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(201,132,122,.3)">⭐ أضف حلم جديد</button>
+    </div>
+    <!-- Stats -->
+    <div style="margin:0 16px 16px;display:flex;gap:10px">
+      <div style="flex:1;background:white;border-radius:16px;padding:14px;text-align:center;border:1px solid var(--rose-pale)">
+        <div style="font-size:22px;font-weight:700;color:var(--rose)" id="stat-total">0</div>
+        <div style="font-size:10px;color:var(--text-soft);margin-top:2px">حلم</div>
+      </div>
+      <div style="flex:1;background:white;border-radius:16px;padding:14px;text-align:center;border:1px solid var(--rose-pale)">
+        <div style="font-size:22px;font-weight:700;color:var(--gold)" id="stat-done">0</div>
+        <div style="font-size:10px;color:var(--text-soft);margin-top:2px">تحقق</div>
+      </div>
+      <div style="flex:1;background:white;border-radius:16px;padding:14px;text-align:center;border:1px solid var(--rose-pale)">
+        <div style="font-size:22px;font-weight:700;color:var(--text-mid)" id="stat-pct">0%</div>
+        <div style="font-size:10px;color:var(--text-soft);margin-top:2px">أنجزنا</div>
       </div>
     </div>
-    <div class="tab-content" id="tab-things">
-      <div class="list-section">
-        <div class="add-input-row">
-          <input class="add-input" id="input-things" placeholder="شي بدنا نعمله..."/>
-          <button class="add-btn" onclick="addItem('things')">+</button>
-        </div>
-        <div class="list-items" id="list-things"></div>
-      </div>
-    </div>
-    <div class="tab-content" id="tab-food">
-      <div class="list-section">
-        <div class="add-input-row">
-          <input class="add-input" id="input-food" placeholder="مطعم أو أكلة نجربها..."/>
-          <button class="add-btn" onclick="addItem('food')">+</button>
-        </div>
-        <div class="list-items" id="list-food"></div>
-      </div>
-    </div>
+    <!-- Dreams grid -->
+    <div id="dreamGrid" style="margin:0 16px 16px;display:flex;flex-direction:column;gap:10px"></div>
   </div>
 
   <!-- MEMORIES -->
@@ -315,7 +331,7 @@ function startApp() {
   refreshMsg();
   refreshIdea();
   listenThinks();
-  ['places','things','food'].forEach(listenList);
+  listenDreams();
   listenMemories();
 }
 
@@ -350,30 +366,112 @@ function listenThinks() {
   });
 }
 
-// ===== LISTS =====
-window.addItem = async (type) => {
-  const inp = document.getElementById('input-'+type);
-  const text = inp.value.trim();
-  if (!text) return;
-  await addDoc(collection(db,'list_'+type), { text, done:false, who:currentUser, createdAt:new Date().toISOString() });
-  inp.value = '';
-  showToast('✅ تمت الإضافة!');
+// ===== DREAMS =====
+const TYPE_META = {
+  places:{icon:'🗺️',label:'مكان',color:'#c9847a'},
+  things:{icon:'✨',label:'شي',color:'#c4a882'},
+  food:{icon:'🍽️',label:'أكل',color:'#7a5c4e'}
 };
-window.toggleItem = async (type, id, done) => { await updateDoc(doc(db,'list_'+type,id), {done:!done}); };
-window.deleteItem = async (type, id) => { await deleteDoc(doc(db,'list_'+type,id)); };
-function listenList(type) {
-  onSnapshot(query(collection(db,'list_'+type), orderBy('createdAt','desc')), snap => {
-    const el = document.getElementById('list-'+type);
-    if (snap.empty) { el.innerHTML = `<div class="empty-state"><div class="empty-emoji">✨</div>أضف أول شي!</div>`; return; }
-    el.innerHTML = snap.docs.map(d => {
-      const i = d.data();
-      return `<div class="list-item ${i.done?'done':''}">
-        <div class="item-check" onclick="toggleItem('${type}','${d.id}',${i.done})">✓</div>
-        <div class="item-text">${i.text}</div>
-        <div class="item-who">${i.who}</div>
-        <button class="item-del" onclick="deleteItem('${type}','${d.id}')">×</button>
-      </div>`;
-    }).join('');
+let curDreamType = 'places';
+let curDreamFilter = 'all';
+let editDreamId = null;
+let allDreams = [];
+
+window.openDreamModal = (id=null, type='places', text='', note='') => {
+  editDreamId = id;
+  curDreamType = type;
+  document.getElementById('dream-text').value = text;
+  document.getElementById('dream-note').value = note;
+  document.getElementById('dreamModalTitle').textContent = id ? '✏️ تعديل الحلم' : '⭐ حلم جديد';
+  // reset type buttons
+  document.querySelectorAll('.dtype-btn').forEach(b => {
+    b.style.borderColor = 'transparent';
+    b.style.background = 'var(--warm)';
+    b.style.color = 'var(--text-soft)';
+  });
+  const activeBtn = document.querySelector(\`.dtype-btn[onclick*="'\${type}'"]\`);
+  if (activeBtn) { activeBtn.style.borderColor='var(--rose-light)'; activeBtn.style.background='var(--rose-pale)'; activeBtn.style.color='var(--rose)'; }
+  document.getElementById('dreamModal').style.display = 'flex';
+  setTimeout(() => document.getElementById('dream-text').focus(), 300);
+};
+
+window.closeDreamModal = () => { document.getElementById('dreamModal').style.display = 'none'; editDreamId = null; };
+document.getElementById('dreamModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeDreamModal(); });
+
+window.setDreamType = (btn, type, label) => {
+  curDreamType = type;
+  document.querySelectorAll('.dtype-btn').forEach(b => {
+    b.style.borderColor='transparent'; b.style.background='var(--warm)'; b.style.color='var(--text-soft)';
+  });
+  btn.style.borderColor='var(--rose-light)'; btn.style.background='var(--rose-pale)'; btn.style.color='var(--rose)';
+};
+
+window.saveDream = async () => {
+  const text = document.getElementById('dream-text').value.trim();
+  if (!text) { showToast('❌ اكتب الحلم!'); return; }
+  const note = document.getElementById('dream-note').value.trim();
+  if (editDreamId) {
+    await updateDoc(doc(db,'dreams',editDreamId), { text, note, type:curDreamType });
+    showToast('✅ تم التعديل!');
+  } else {
+    await addDoc(collection(db,'dreams'), { text, note, type:curDreamType, done:false, who:currentUser, createdAt:new Date().toISOString() });
+    showToast('⭐ تمت الإضافة!');
+  }
+  closeDreamModal();
+};
+
+window.toggleDream = async (id, done) => { await updateDoc(doc(db,'dreams',id), {done:!done}); };
+window.deleteDream = async (id) => { if(!confirm('بدك تحذف هالحلم؟')) return; await deleteDoc(doc(db,'dreams',id)); showToast('🗑️ تم الحذف'); };
+
+window.switchDTab = (btn, filter) => {
+  curDreamFilter = filter;
+  document.querySelectorAll('.dtab').forEach(b => {
+    b.style.background='transparent'; b.style.color='var(--text-soft)'; b.style.boxShadow='none';
+  });
+  btn.style.background='white'; btn.style.color='var(--text-dark)'; btn.style.boxShadow='0 2px 8px rgba(61,43,34,.08)';
+  renderDreams();
+};
+
+function renderDreams() {
+  const grid = document.getElementById('dreamGrid');
+  const filtered = curDreamFilter==='all' ? allDreams : allDreams.filter(d=>d.type===curDreamFilter);
+  // update stats
+  const total = allDreams.length;
+  const done = allDreams.filter(d=>d.done).length;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-done').textContent = done;
+  document.getElementById('stat-pct').textContent = total ? Math.round(done/total*100)+'%' : '0%';
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="empty-state"><div class="empty-emoji">⭐</div>أضف أول حلم!</div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map(({id, d}) => {
+    const meta = TYPE_META[d.type] || TYPE_META.places;
+    return `<div style="background:white;border-radius:20px;padding:16px;box-shadow:0 2px 12px rgba(61,43,34,.07);border:1px solid ${d.done?'var(--gold-light)':'var(--rose-pale)'};animation:fadeIn .3s ease;${d.done?'opacity:.75':''}">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <button onclick="toggleDream('${id}',${d.done})" style="width:28px;height:28px;border-radius:50%;border:2px solid ${d.done?'var(--gold)':'var(--rose-light)'};background:${d.done?'var(--gold)':'transparent'};color:${d.done?'white':'transparent'};font-size:14px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s">✓</button>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+            <span style="font-size:10px;background:${d.done?'var(--gold-light)':'var(--rose-pale)'};color:${d.done?'var(--gold)':'var(--rose)'};padding:2px 8px;border-radius:10px;font-weight:700">${meta.icon} ${meta.label}</span>
+            <span style="font-size:10px;color:var(--text-soft);background:var(--cream);padding:2px 8px;border-radius:10px">${d.who}</span>
+          </div>
+          <div style="font-weight:700;font-size:14px;color:var(--text-dark);${d.done?'text-decoration:line-through;color:var(--text-soft)':''}">${d.text}</div>
+          ${d.note?`<div style="font-size:12px;color:var(--text-soft);margin-top:4px;line-height:1.5">${d.note}</div>`:''}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+          <button onclick="openDreamModal('${id}','${d.type}','${d.text.replace(/'/g,"\'")}','${(d.note||'').replace(/'/g,"\'")}'')" style="background:var(--warm);border:none;border-radius:8px;padding:6px 8px;font-size:13px;cursor:pointer">✏️</button>
+          <button onclick="deleteDream('${id}')" style="background:#fff0f0;border:none;border-radius:8px;padding:6px 8px;font-size:13px;cursor:pointer">🗑️</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function listenDreams() {
+  onSnapshot(query(collection(db,'dreams'), orderBy('createdAt','desc')), snap => {
+    allDreams = snap.docs.map(d => ({id:d.id, d:d.data()}));
+    renderDreams();
   });
 }
 
@@ -494,10 +592,8 @@ window.showToast = (msg) => {
   setTimeout(()=>t.classList.remove('show'), 2500);
 };
 
-// ===== ENTER KEY =====
-document.querySelectorAll('.add-input').forEach(inp => {
-  inp.addEventListener('keypress', e => { if(e.key==='Enter' && inp.id.startsWith('input-')) addItem(inp.id.replace('input-','')); });
-});
+// Enter on dream text
+document.getElementById('dream-text').addEventListener('keypress', e => { if(e.key==='Enter') saveDream(); });
 
 // ===== INIT =====
 if (currentUser) {
