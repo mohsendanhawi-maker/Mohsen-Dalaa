@@ -425,6 +425,8 @@ window.addMemoryText = async () => {
   document.getElementById('mem-desc').value = '';
   showToast('💕 تمت إضافة الذكرى!');
 };
+
+window.handleMemoryFile = (input) => {
   const file = input.files[0];
   if (!file) return;
   const reader = new FileReader();
