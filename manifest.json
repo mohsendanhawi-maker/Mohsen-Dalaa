@@ -1,0 +1,27 @@
+{
+  "name": "محسن ودلع 💍",
+  "short_name": "محسن ودلع",
+  "description": "تطبيقنا الخاص معاً",
+  "start_url": "/Mohsen-Dalaa/",
+  "scope": "/Mohsen-Dalaa/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fdf6f0",
+  "theme_color": "#c9847a",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
